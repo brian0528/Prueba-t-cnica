@@ -1,0 +1,101 @@
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class CodigoMorse {
+
+    private static final HashMap<String, Character> morseAlfabeto = new HashMap<>();
+    static {
+        morseAlfabeto.put(".-", 'A');
+        morseAlfabeto.put("-...", 'B');
+        morseAlfabeto.put("-.-.", 'C');
+        morseAlfabeto.put("-..", 'D');
+        morseAlfabeto.put(".", 'E');
+        morseAlfabeto.put("..-.", 'F');
+        morseAlfabeto.put("--.", 'G');
+        morseAlfabeto.put("....", 'H');
+        morseAlfabeto.put("..", 'I');
+        morseAlfabeto.put(".---", 'J');
+        morseAlfabeto.put("-.-", 'K');
+        morseAlfabeto.put(".-..", 'L');
+        morseAlfabeto.put("--", 'M');
+        morseAlfabeto.put("-.", 'N');
+        morseAlfabeto.put("---", 'O');
+        morseAlfabeto.put(".--.", 'P');
+        morseAlfabeto.put("--.-", 'Q');
+        morseAlfabeto.put(".-.", 'R');
+        morseAlfabeto.put("...", 'S');
+        morseAlfabeto.put("-", 'T');
+        morseAlfabeto.put("..-", 'U');
+        morseAlfabeto.put("...-", 'V');
+        morseAlfabeto.put(".--", 'W');
+        morseAlfabeto.put("-..-", 'X');
+        morseAlfabeto.put("-.--", 'Y');
+        morseAlfabeto.put("--..", 'Z');
+    }
+
+    public static String morseATexto(String morse) {
+        StringBuilder texto = new StringBuilder();
+        String[] palabras = morse.split(" / ");
+        for (String palabra : palabras) {
+            String[] letras = palabra.split(" ");
+            for (String letra : letras) {
+                if (morseAlfabeto.containsKey(letra)) {
+                    texto.append(morseAlfabeto.get(letra));
+                }
+            }
+            texto.append(" ");
+        }
+        return texto.toString().trim();
+    }
+
+    public static String textoAMorse(String texto) {
+        texto = texto.toUpperCase();
+        StringBuilder morse = new StringBuilder();
+        for (int i = 0; i < texto.length(); i++) {
+            char caracter = texto.charAt(i);
+            if (caracter == ' ') {
+                morse.append("/ ");
+            } else {
+                String codigoMorse = "";
+                if (morseAlfabeto.containsValue(caracter)) {
+                    for (String key : morseAlfabeto.keySet()) {
+                        if (morseAlfabeto.get(key) == caracter) {
+                            codigoMorse = key;
+                            break;
+                        }
+                    }
+                    morse.append(codigoMorse).append(" ");
+                }
+            }
+        }
+        return morse.toString().trim();
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Hola, bienvenido al traductor de código Morse:");
+        System.out.println("¿Qué deseas hacer?");
+        System.out.println("1. Traducir texto a código Morse.");
+        System.out.println("2. Traducir código Morse a texto.");
+        int opcion = scanner.nextInt();
+        scanner.nextLine(); // Consumir el salto de línea
+        
+        if (opcion == 1) {
+            System.out.println("Introduce un mensaje en texto normal:");
+            String mensajeTexto = scanner.nextLine();
+            String mensajeMorse = textoAMorse(mensajeTexto);
+            System.out.println("Texto: " + mensajeTexto);
+            System.out.println("Mensaje Morse: " + mensajeMorse);
+        } else if (opcion == 2) {
+            System.out.println("Introduce un mensaje en código Morse:");
+            String mensajeMorse = scanner.nextLine();
+            String mensajeTexto = morseATexto(mensajeMorse);
+            System.out.println("Mensaje Morse: " + mensajeMorse);
+            System.out.println("Texto: " + mensajeTexto);
+        } else {
+            System.out.println("Opción no válida.");
+        }
+
+        scanner.close();
+    }
+}
